@@ -2,15 +2,14 @@
 
 {% extends "prelogin-layout.html" %}
 
-{% block title %}Register {% endblock title%}
+{% block title %}Login {% endblock title%}
 
 {% block content %}
-<h2>Register</h2>
+<h2>Login</h2>
 
-<form action="{{ url_for('index') }}" , method="POST">
+<form action="{{ url_for('login') }}" , method="POST">
     {{ displayField(form.username, 'Username', autocomplete="off", autofocus=true) }}
     {{ displayField(form.password, 'Password') }}
-    {{ displayField(form.cnfrm_password, 'Retype Password') }}
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-warning">
     </div>

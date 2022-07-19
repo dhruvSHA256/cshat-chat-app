@@ -1,6 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template, url_for
 from models import User, SQLAlchemy
-from wtform_fields import RegistrationForm
+from wtform_fields import RegistrationForm, LoginForm
 import os
 
 # config flask app
@@ -18,16 +18,28 @@ db = SQLAlchemy(app)
 def index():
     reg_form = RegistrationForm()
 
-    # if form is validated
+    # if POST is used and form is validated
     if reg_form.validate_on_submit():
         username = reg_form.username.data
         password = reg_form.password.data
         user = User(username=username, password=password)
         db.session.add(user)
         db.session.commit()
-        return "inserted into db"
+        return redirect(url_for('login'))
 
     return render_template("index.html", form=reg_form)
+
+
+# login route
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    login_form = LoginForm()
+
+    # if POST is used and login successful
+    if login_form.validate_on_submit():
+        return "logged in"
+
+    return render_template("login.html", form=login_form)
 
 
 if __name__ == "__main__":
