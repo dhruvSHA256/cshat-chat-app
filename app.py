@@ -1,17 +1,20 @@
-from flask import Flask, redirect, render_template, url_for
-from models import User, SQLAlchemy
-from wtform_fields import RegistrationForm, LoginForm
-from passlib.hash import bcrypt_sha256
-from flask_login import LoginManager, login_user, current_user, logout_user
 import os
+
+from flask import Flask, flash, redirect, render_template, url_for
+from flask_login import LoginManager, current_user, login_user, logout_user
+from passlib.hash import bcrypt_sha256
+
+from models import SQLAlchemy, User
+from wtform_fields import LoginForm, RegistrationForm
 
 # config flask app
 app = Flask(__name__)
 app.secret_key = "replace later"
 
 # config postgres db
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URL'].replace(
-    "postgres", "postgresql")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DB_URL"].replace(
+    "postgres", "postgresql"
+)
 db = SQLAlchemy(app)
 
 
@@ -21,8 +24,8 @@ login_manager.init_app(app)
 
 
 @login_manager.user_loader
-def load_user(id):
-    return User.query.filter_by(id=id).first()
+def load_user(user_id):
+    return User.query.filter_by(id=user_id).first()
 
 
 # main route
@@ -38,7 +41,9 @@ def index():
         user = User(username=username, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('login'))
+
+        flash("Registered Successfully. Please Login", "success")
+        return redirect(url_for("login"))
 
     return render_template("index.html", form=reg_form)
 
@@ -50,8 +55,7 @@ def login():
 
     # if POST is used and login successful
     if login_form.validate_on_submit():
-        user_object = User.query.filter_by(
-            username=login_form.username.data).first()
+        user_object = User.query.filter_by(username=login_form.username.data).first()
         login_user(user_object)
         return redirect(url_for("chat"))
 
@@ -61,13 +65,15 @@ def login():
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
     if not current_user.is_authenticated:
-        return "Please login"
+        flash("Please login", "danger")
+        return redirect(url_for("login"))
     return "in chat"
 
 
 @app.route("/logout", methods=["GET"])
 def logout():
     logout_user()
+    flash("Logged out successfully", "success")
     return "Logged out"
 
 
