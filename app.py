@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, url_for
 from models import User, SQLAlchemy
 from wtform_fields import RegistrationForm, LoginForm
 from passlib.hash import bcrypt_sha256
+from flask_login import LoginManager, login_user, current_user, logout_user
 import os
 
 # config flask app
@@ -12,6 +13,16 @@ app.secret_key = "replace later"
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URL'].replace(
     "postgres", "postgresql")
 db = SQLAlchemy(app)
+
+
+# config flask-login for session management
+login_manager = LoginManager(app)
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.filter_by(id=id).first()
 
 
 # main route
@@ -39,9 +50,25 @@ def login():
 
     # if POST is used and login successful
     if login_form.validate_on_submit():
-        return "logged in"
+        user_object = User.query.filter_by(
+            username=login_form.username.data).first()
+        login_user(user_object)
+        return redirect(url_for("chat"))
 
     return render_template("login.html", form=login_form)
+
+
+@app.route("/chat", methods=["GET", "POST"])
+def chat():
+    if not current_user.is_authenticated:
+        return "Please login"
+    return "in chat"
+
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    logout_user()
+    return "Logged out"
 
 
 if __name__ == "__main__":
