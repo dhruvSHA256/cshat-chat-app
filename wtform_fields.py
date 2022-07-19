@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, ValidationError
 from wtforms.validators import InputRequired, Length, EqualTo
+from passlib.hash import bcrypt_sha256
 from models import User
 
 
@@ -11,7 +12,7 @@ def validate_creds(form, field):
     if not user_object:
         raise ValidationError("Username or password incorrect")
 
-    elif user_object.password != field.data:
+    elif not bcrypt_sha256.verify(field.data, user_object.password):
         raise ValidationError("Username or password incorrect")
 
 

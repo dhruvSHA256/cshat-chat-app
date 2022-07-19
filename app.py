@@ -1,6 +1,7 @@
 from flask import Flask, redirect, render_template, url_for
 from models import User, SQLAlchemy
 from wtform_fields import RegistrationForm, LoginForm
+from passlib.hash import bcrypt_sha256
 import os
 
 # config flask app
@@ -22,7 +23,8 @@ def index():
     if reg_form.validate_on_submit():
         username = reg_form.username.data
         password = reg_form.password.data
-        user = User(username=username, password=password)
+        hashed_password = bcrypt_sha256.hash(password)
+        user = User(username=username, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('login'))
