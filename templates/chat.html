@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" charset="utf-8">
+    <title>Cshat</title>
+</head>
+
+<body>
+    <nav>
+
+    </nav>
+    <div id="main-section">
+        <nav id="sidebar">
+            <h4>ROOMS</h4>
+            {% for room in rooms %}
+            <p class="select-room">{{ room }}</p>
+            {% endfor %}
+        </nav>
+        <div id="panel-right">
+            <div id="message-display">
+
+            </div>
+            <div id="input-area">
+                <input type="text" id="user_message" placeholder="Type a message" autocomplete="off" autofocus="on">
+                <button type="button" id="send_message">Send</button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+        integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        // username;
+        const username = `{{ username }}`;
+    </script>
+
+    <script src="{{ url_for('static',filename='scripts/socketio.js') }}"> </script>
+    <script src="{{ url_for('static',filename='scripts/script.js') }}"> </script>
+</body>
+
+</html>
