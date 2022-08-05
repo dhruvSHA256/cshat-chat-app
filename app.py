@@ -81,7 +81,7 @@ def chat():
 def logout():
     logout_user()
     flash("Logged out successfully", "success")
-    return "Logged out"
+    return redirect(url_for("login"))
 
 
 @socketio.on("message")

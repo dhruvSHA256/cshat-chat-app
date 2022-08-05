@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let socket = io.connect(`http://${document.domain}:${location.port}`);
+    // let socket = io.connect(`https://${document.domain}:${location.port}`);
+    let socket = io.connect();
+
     let room = "lounge";
     const sendButton = document.getElementById("send_message");
     const userInput = document.getElementById("user_message");
