@@ -110,4 +110,7 @@ def on_leave(data):
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    if os.environ["LOCAL"]:
+        socketio.run(app, debug=True)
+    else:
+        app.run()
