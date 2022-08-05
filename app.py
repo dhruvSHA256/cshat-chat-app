@@ -19,9 +19,8 @@ app = Flask(__name__)
 app.secret_key = os.environ["SECRET_KEY"]
 
 # config postgres db
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DB_URL"].replace(
-    "postgres", "postgresql"
-)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DB_URL"]
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DB_URL"].replace( "postgres", "postgresql")
 db = SQLAlchemy(app)
 
 # config flask-socketio
