@@ -58,48 +58,6 @@ app.register_blueprint(construct_chat_blueprint(ROOMS), url_prefix="")
 # home route
 app.register_blueprint(construct_home_blueprint(db), url_prefix="")
 
-# main route
-# @app.route("/", methods=["GET", "POST"])
-# def index():
-#     reg_form = RegistrationForm()
-
-#     # if POST is used and form is validated
-#     if reg_form.validate_on_submit():
-#         username = reg_form.username.data
-#         password = reg_form.password.data
-#         hashed_password = bcrypt_sha256.hash(password)
-#         user = User(username=username, password=hashed_password)
-#         db.session.add(user)
-#         db.session.commit()
-
-#         flash("Registered Successfully. Please Login", "success")
-#         return redirect(url_for("login"))
-
-#     return render_template("index.html", form=reg_form)
-
-
-# login route
-# @app.route("/login", methods=["GET", "POST"])
-# def login():
-#     login_form = LoginForm()
-
-#     # if POST is used and login successful
-#     if login_form.validate_on_submit():
-#         user_object = User.query.filter_by(username=login_form.username.data).first()
-#         login_user(user_object)
-#         return redirect(url_for("chat.chat"))
-
-#     return render_template("login.html", form=login_form)
-
-
-# chat route
-# @app.route("/chat", methods=["GET", "POST"])
-# def chat():
-#     if not current_user.is_authenticated:
-#         flash("Please login", "danger")
-#         return redirect(url_for("login"))
-#     return render_template("chat.html", username=current_user.username, rooms=ROOMS)
-
 
 # message event
 @socketio.on("message")
