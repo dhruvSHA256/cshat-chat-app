@@ -11,7 +11,7 @@ from wtform_fields import LoginForm, RegistrationForm
 
 # config flask app
 app = Flask(__name__)
-app.secret_key = "replace later"
+app.secret_key = os.environ["SECRET_KEY"]
 
 # config postgres db
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DB_URL"].replace(
