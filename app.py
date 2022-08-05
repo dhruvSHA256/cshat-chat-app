@@ -6,8 +6,8 @@ from flask_login import LoginManager, current_user, login_user, logout_user
 from flask_socketio import SocketIO, join_room, leave_room, send
 from passlib.hash import bcrypt_sha256
 
-from models import SQLAlchemy, User
-from wtform_fields import LoginForm, RegistrationForm
+from models.User import SQLAlchemy, User
+from utils.wtform_fields import LoginForm, RegistrationForm
 
 # config flask app
 app = Flask(__name__)

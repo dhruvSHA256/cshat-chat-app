@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, ValidationError
-from wtforms.validators import InputRequired, Length, EqualTo
 from passlib.hash import bcrypt_sha256
-from models import User
+from wtforms import PasswordField, StringField, SubmitField, ValidationError
+from wtforms.validators import EqualTo, InputRequired, Length
+
+from models.User import User
 
 
 def validate_creds(form, field):
@@ -19,12 +20,13 @@ def validate_creds(form, field):
 class LoginForm(FlaskForm):
     username = StringField(
         "username_label",
-        validators=[InputRequired(message="Username Required"), ],
+        validators=[
+            InputRequired(message="Username Required"),
+        ],
     )
     password = PasswordField(
         "password_label",
-        validators=[InputRequired(
-            message="Password Required"), validate_creds],
+        validators=[InputRequired(message="Password Required"), validate_creds],
     )
     submit_button = SubmitField("Login")
 
@@ -35,8 +37,7 @@ class RegistrationForm(FlaskForm):
         validators=[
             InputRequired(message="Username Required"),
             Length(
-                min=4, max=10,
-                message="Username must between 4 and 10 characters long"
+                min=4, max=10, message="Username must between 4 and 10 characters long"
             ),
         ],
     )
@@ -45,8 +46,7 @@ class RegistrationForm(FlaskForm):
         validators=[
             InputRequired(message="Password Required"),
             Length(
-                min=8, max=25,
-                message="Password must between 8 and 25 characters long"
+                min=8, max=25, message="Password must between 8 and 25 characters long"
             ),
         ],
     )
