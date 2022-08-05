@@ -1,4 +1,5 @@
 from flask import Blueprint, flash, redirect, render_template, url_for
+from flask_login import current_user
 from passlib.hash import bcrypt_sha256
 
 from utils.wtform_fields import RegistrationForm, User
@@ -12,6 +13,9 @@ def construct_home_blueprint(db):
     @homeRoute.route("/home", methods=["GET", "POST"])
     @homeRoute.route("/", methods=["GET", "POST"])
     def home():
+        # redirect user to chat page if already login
+        if current_user.is_authenticated:
+            return redirect(url_for("chat.chat"))
         reg_form = RegistrationForm()
 
         # if POST is used and form is validated
